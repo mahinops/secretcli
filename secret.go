@@ -72,3 +72,20 @@ func (secrets *Secrets) list() {
 	}
 	table.Render()
 }
+
+func (secret *Secrets) validate(index int) error {
+	if index < 0 || index >= len(*secret) {
+		err := errors.New("Invalid Index")
+		fmt.Println(err)
+		return err
+	}
+	return nil
+}
+
+func (secret *Secrets) delete(index int) error {
+	if err := secret.validate(index); err != nil {
+		return err
+	}
+	*secret = append((*secret)[:index], (*secret)[index+1:]...)
+	return nil
+}

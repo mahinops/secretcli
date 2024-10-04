@@ -32,7 +32,6 @@ func registerUser(user *User, userStorage *Storage[User]) error {
 func authenticateUser(user *User, userStorage *Storage[User]) error {
 	// If session is still active, no need to authenticate
 	if user.IsSessionActive() {
-		fmt.Println("Already authenticated. You can manage your secrets.")
 		return nil
 	}
 
