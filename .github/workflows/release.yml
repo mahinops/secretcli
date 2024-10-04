@@ -42,13 +42,13 @@ jobs:
         run: |
           upload_url=$(gh release view ${{ github.event.inputs.tag }} --json uploadUrl -q ".uploadUrl")
           echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
-        env:                     # Add this to set the GH_TOKEN
+        env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload binary
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ env.UPLOAD_URL }}
-          asset_path: secretcli
+          asset_path: ./secretcli
           asset_name: secretcli
           asset_content_type: application/octet-stream
