@@ -45,6 +45,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check File
+        run: |
+          ll
+
       - name: Upload binary
         uses: actions/upload-release-asset@v1
         with:
