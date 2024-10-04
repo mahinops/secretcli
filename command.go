@@ -7,13 +7,15 @@ import (
 )
 
 type CmdFlags struct {
-	Add string
+	Add  string
+	List bool
 }
 
 // NewCommandFlags initializes command flags
 func NewCommandFlags() *CmdFlags {
 	cf := CmdFlags{}
 	flag.StringVar(&cf.Add, "title", "", "Add a new secret")
+	flag.BoolVar(&cf.List, "list", false, "List all secrets")
 	flag.Parse()
 	return &cf
 }
@@ -48,6 +50,9 @@ func (cf *CmdFlags) Execute(secrets *Secrets) {
 		}
 		fmt.Println("Secret added successfully!")
 
+	case cf.List:
+		// Call the list method to list all secrets
+		secrets.list()
 	default:
 		fmt.Println("Invalid Command. Use --help to see available commands.")
 	}

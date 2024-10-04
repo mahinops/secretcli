@@ -2,8 +2,11 @@ package main
 
 import (
 	"errors"
-	"fmt"
+	"os"
+	"strconv"
 	"time"
+
+	"github.com/aquasecurity/table"
 )
 
 type Secret struct {
@@ -14,7 +17,7 @@ type Secret struct {
 	Email     string
 	Website   string
 	CreatedAt time.Time
-	UpdatedAt time.Time
+	UpdatedAt *time.Time
 }
 
 type Secrets []Secret
@@ -34,12 +37,24 @@ func (secret *Secrets) add(title, username, password, note, email, website strin
 		Email:     email,
 		Website:   website,
 		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		UpdatedAt: nil,
 	}
-
 	// Append the new secret to the slice
 	*secret = append(*secret, newSecret)
-
-	fmt.Println(newSecret)
 	return nil
+}
+
+func (secrets *Secrets) list() {
+	table := table.New(os.Stdout)
+	table.SetRowLines(false)
+	table.SetHeaders("#", "Title", "Username", "Password", "Note", "Email", "Website", "Created At", "Updated At")
+
+	for index, secret := range *secrets {
+		updatedAt := ""
+		if secret.UpdatedAt != nil {
+			updatedAt = secret.UpdatedAt.Format(time.RFC3339)
+		}
+		table.AddRow(strconv.Itoa(index), secret.Title, secret.Username, secret.Password, secret.Note, secret.Email, secret.Website, secret.CreatedAt.Format(time.RFC3339), updatedAt)
+	}
+	table.Render()
 }
