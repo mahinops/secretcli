@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -27,12 +28,17 @@ func (secret *Secrets) add(title, username, password, note, email, website strin
 		return errors.New("title is required")
 	}
 
-	hashPassword := hashPassword(password)
+	encryptPassword, err := encrypt(password)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(encryptPassword)
 	// Create a new Secret instance
 	newSecret := Secret{
 		Title:     title,
 		Username:  username,
-		Password:  hashPassword,
+		Password:  encryptPassword,
 		Note:      note,
 		Email:     email,
 		Website:   website,
@@ -54,7 +60,15 @@ func (secrets *Secrets) list() {
 		if secret.UpdatedAt != nil {
 			updatedAt = secret.UpdatedAt.Format(time.RFC3339)
 		}
-		table.AddRow(strconv.Itoa(index), secret.Title, secret.Username, secret.Password, secret.Note, secret.Email, secret.Website, secret.CreatedAt.Format(time.RFC3339), updatedAt)
+		decryptPassword := ""
+		if len(secret.Password) != 0 {
+			var err error
+			decryptPassword, err = decrypt(secret.Password)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+		table.AddRow(strconv.Itoa(index), secret.Title, secret.Username, decryptPassword, secret.Note, secret.Email, secret.Website, secret.CreatedAt.Format(time.RFC3339), updatedAt)
 	}
 	table.Render()
 }
