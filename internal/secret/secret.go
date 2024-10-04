@@ -1,13 +1,13 @@
-package main
+package secret
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/aquasecurity/table"
+	"github.com/mahinops/secretcli/internal/utils"
 )
 
 type Secret struct {
@@ -24,12 +24,12 @@ type Secret struct {
 type Secrets []Secret
 
 // Function to add a new secret
-func (secrets *Secrets) add(title, username, password, note, email, website string) error {
+func (secrets *Secrets) Add(title, username, password, note, email, website string) error {
 	if title == "" {
 		return errors.New("title is required")
 	}
 
-	encryptPassword, err := encrypt(password)
+	encryptPassword, err := utils.Encrypt(password)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (secrets *Secrets) add(title, username, password, note, email, website stri
 }
 
 // Function to list all secrets
-func (secrets *Secrets) list() {
+func (secrets *Secrets) ListSecrets() error {
 	table := table.New(os.Stdout)
 	table.SetRowLines(false)
 	table.SetHeaders("#", "Title", "Username", "Password", "Note", "Email", "Website", "Created At", "Updated At")
@@ -65,29 +65,29 @@ func (secrets *Secrets) list() {
 		decryptPassword := ""
 		if len(secret.Password) != 0 {
 			var err error
-			decryptPassword, err = decrypt(secret.Password)
+			decryptPassword, err = utils.Decrypt(secret.Password)
 			if err != nil {
-				fmt.Println(err)
+				return err
 			}
 		}
 		table.AddRow(strconv.Itoa(index), secret.Title, secret.Username, decryptPassword, secret.Note, secret.Email, secret.Website, secret.CreatedAt.Format(time.RFC3339), updatedAt)
 	}
 	table.Render()
+	return nil
 }
 
 // Validate secret index
-func (secrets *Secrets) validate(index int) error {
+func (secrets *Secrets) Validate(index int) error {
 	if index < 0 || index >= len(*secrets) {
 		err := errors.New("invalid index")
-		fmt.Println(err)
 		return err
 	}
 	return nil
 }
 
 // Delete a secret
-func (secrets *Secrets) delete(index int) error {
-	if err := secrets.validate(index); err != nil {
+func (secrets *Secrets) Delete(index int) error {
+	if err := secrets.Validate(index); err != nil {
 		return err
 	}
 	*secrets = append((*secrets)[:index], (*secrets)[index+1:]...)

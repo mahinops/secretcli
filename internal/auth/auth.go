@@ -1,4 +1,4 @@
-package main
+package auth
 
 import (
 	"crypto/sha256"
@@ -25,7 +25,6 @@ func (u *User) Authenticate(password string) error {
 	if hashPassword(password) != u.PasswordHash {
 		return errors.New("invalid password")
 	}
-	// Update the last authenticated time
 	u.LastAuth = time.Now()
 	return nil
 }

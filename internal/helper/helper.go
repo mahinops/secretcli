@@ -1,13 +1,16 @@
-package main
+package helper
 
 import (
 	"bufio"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/mahinops/secretcli/internal/auth"
+	"github.com/mahinops/secretcli/internal/storage"
 )
 
-func registerUser(user *User, userStorage *Storage[User]) error {
+func RegisterUser(user *auth.User, userStorage *storage.Storage[auth.User]) error {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter a password to register: ")
@@ -29,7 +32,7 @@ func registerUser(user *User, userStorage *Storage[User]) error {
 	return nil
 }
 
-func authenticateUser(user *User, userStorage *Storage[User]) error {
+func AuthenticateUser(user *auth.User, userStorage *storage.Storage[auth.User]) error {
 	// If session is still active, no need to authenticate
 	if user.IsSessionActive() {
 		return nil
