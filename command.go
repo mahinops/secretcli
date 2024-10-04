@@ -20,7 +20,8 @@ func NewCommandFlags() *CmdFlags {
 
 // Execute processes the command flags and prompts for secret details
 func (cf *CmdFlags) Execute(secrets *Secrets) {
-	if cf.Add != "" {
+	switch {
+	case cf.Add != "":
 		var username, password, note, email, website string
 		fmt.Println("Adding a new secret with title:", cf.Add)
 
@@ -46,7 +47,8 @@ func (cf *CmdFlags) Execute(secrets *Secrets) {
 			return
 		}
 		fmt.Println("Secret added successfully!")
-	} else {
+
+	default:
 		fmt.Println("Invalid Command. Use --help to see available commands.")
 	}
 }
