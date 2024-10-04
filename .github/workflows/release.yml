@@ -33,6 +33,8 @@ jobs:
         run: |
           upload_url=$(gh release view ${{ github.event.inputs.tag }} --json uploadUrl -q ".uploadUrl")
           echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -43,9 +45,6 @@ jobs:
         run: |
           set -ex
           go build -o secretcli cmd/secretcli.go
-
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check File
         run: |
