@@ -15,6 +15,11 @@ jobs:
       contents: write
       deployments: write
 
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        arch: [amd64, arm64]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,18 +49,14 @@ jobs:
       - name: Build binary
         run: |
           set -ex
-          go build -o secretcli cmd/secretcli.go
-
-      - name: Check File
-        run: |
-          ls -lha
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o secretcli cmd/secretcli.go
 
       - name: Upload binary
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ env.UPLOAD_URL }}
           asset_path: ./secretcli
-          asset_name: secretcli
+          asset_name: secretcli-${{ matrix.os }}-${{ matrix.arch }}
           asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
