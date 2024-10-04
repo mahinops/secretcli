@@ -36,8 +36,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Check Upload URL
-      run: echo "UPLOAD_URL is ${{ env.UPLOAD_URL }}"
+      - name: Check Upload URL
+        run: echo "UPLOAD_URL is ${{ env.UPLOAD_URL }}"
 
   build-and-upload:
     needs: create-release
