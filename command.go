@@ -1,4 +1,3 @@
-// command.go
 package main
 
 import (
@@ -21,12 +20,13 @@ func NewCommandFlags() *CmdFlags {
 	cf := CmdFlags{}
 	flag.BoolVar(&cf.Add, "add", false, "Add a new secret")
 	flag.BoolVar(&cf.List, "list", false, "List all secrets")
-	flag.IntVar(&cf.Delete, "del", -1, "Delete a secrets by index")
+	flag.IntVar(&cf.Delete, "del", -1, "Delete a secret by index")
 	flag.IntVar(&cf.Edit, "edit", -1, "Edit a secret by index")
 	flag.Parse()
 	return &cf
 }
 
+// Execute processes the command flags and prompts for secret details
 func (cf *CmdFlags) Execute(secrets *Secrets) {
 	switch {
 	case cf.Add:

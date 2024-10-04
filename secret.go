@@ -23,17 +23,17 @@ type Secret struct {
 
 type Secrets []Secret
 
-func (secret *Secrets) add(title, username, password, note, email, website string) error {
+// Function to add a new secret
+func (secrets *Secrets) add(title, username, password, note, email, website string) error {
 	if title == "" {
 		return errors.New("title is required")
 	}
 
 	encryptPassword, err := encrypt(password)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
-	fmt.Println(encryptPassword)
 	// Create a new Secret instance
 	newSecret := Secret{
 		Title:     title,
@@ -45,11 +45,13 @@ func (secret *Secrets) add(title, username, password, note, email, website strin
 		CreatedAt: time.Now(),
 		UpdatedAt: nil,
 	}
+
 	// Append the new secret to the slice
-	*secret = append(*secret, newSecret)
+	*secrets = append(*secrets, newSecret)
 	return nil
 }
 
+// Function to list all secrets
 func (secrets *Secrets) list() {
 	table := table.New(os.Stdout)
 	table.SetRowLines(false)
@@ -73,8 +75,9 @@ func (secrets *Secrets) list() {
 	table.Render()
 }
 
-func (secret *Secrets) validate(index int) error {
-	if index < 0 || index >= len(*secret) {
+// Validate secret index
+func (secrets *Secrets) validate(index int) error {
+	if index < 0 || index >= len(*secrets) {
 		err := errors.New("invalid index")
 		fmt.Println(err)
 		return err
@@ -82,10 +85,11 @@ func (secret *Secrets) validate(index int) error {
 	return nil
 }
 
-func (secret *Secrets) delete(index int) error {
-	if err := secret.validate(index); err != nil {
+// Delete a secret
+func (secrets *Secrets) delete(index int) error {
+	if err := secrets.validate(index); err != nil {
 		return err
 	}
-	*secret = append((*secret)[:index], (*secret)[index+1:]...)
+	*secrets = append((*secrets)[:index], (*secrets)[index+1:]...)
 	return nil
 }
