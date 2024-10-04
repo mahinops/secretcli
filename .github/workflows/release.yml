@@ -57,3 +57,5 @@ jobs:
           asset_path: ./secretcli
           asset_name: secretcli
           asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
