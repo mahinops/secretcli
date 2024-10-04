@@ -14,6 +14,9 @@ jobs:
     permissions:
       contents: write
       deployments: write
+    
+    outputs:
+      upload_url: ${{ steps.get_upload_url.outputs.upload_url }} 
 
     steps:
       - name: Checkout code
@@ -35,9 +38,6 @@ jobs:
           echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check Upload URL
-        run: echo "UPLOAD_URL is ${{ env.UPLOAD_URL }}"
 
   build-and-upload:
     needs: create-release
@@ -64,13 +64,10 @@ jobs:
           set -ex
           GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o secretcli cmd/secretcli.go
 
-      - name: Check Upload URL
-        run: echo "UPLOAD_URL is ${{ env.UPLOAD_URL }}"
-
       - name: Upload binary
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ env.UPLOAD_URL }}
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: ./secretcli
           asset_name: secretcli-${{ matrix.os }}-${{ matrix.arch }}
           asset_content_type: application/octet-stream
