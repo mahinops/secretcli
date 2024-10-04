@@ -42,6 +42,8 @@ jobs:
         run: |
           upload_url=$(gh release view ${{ github.event.inputs.tag }} --json uploadUrl -q ".uploadUrl")
           echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
+        env:                     # Add this to set the GH_TOKEN
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload binary
         uses: actions/upload-release-asset@v1
