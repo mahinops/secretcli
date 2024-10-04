@@ -50,7 +50,7 @@ To install Secret CLI, follow these steps:
     secretcli
     ```
 
-`Note:` If you face any issue like permission error or not truster follow the alternative way_
+`Note:` If you face any issue like permission error or not trusted, then follow this alternative way_
 
 1. Clone This [Repo](https://github.com/mahinops/secretcli) in Your PC.
 2. Install Golang:
