@@ -80,3 +80,14 @@ func (secrets *Secrets) Delete(index int) error {
 	*secrets = append((*secrets)[:index], (*secrets)[index+1:]...)
 	return nil
 }
+
+// Edit an existing secret
+func (secrets *Secrets) Edit(index int, updatedSecret Secret) error {
+	if err := secrets.Validate(index); err != nil {
+		return err
+	}
+
+	// Update the secret
+	(*secrets)[index] = updatedSecret
+	return nil
+}

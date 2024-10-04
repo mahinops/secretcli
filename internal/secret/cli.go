@@ -29,12 +29,12 @@ func NewCommandFlags() *CmdFlags {
 
 func (cf *CmdFlags) Execute(secrets *Secrets) {
 	switch {
-	case cf.Add:
-		cf.addSecret(secrets)
 	case cf.List:
 		cf.listSecrets(secrets)
 	case cf.Delete != -1:
 		cf.deleteSecret(secrets)
+	case cf.Add:
+		cf.addSecret(secrets)
 	case cf.Edit != -1:
 		cf.editSecret(secrets, cf.Edit)
 	default:
@@ -108,7 +108,13 @@ func (cf *CmdFlags) addSecret(secrets *Secrets) {
 }
 
 // Edit an existing secret
+// Edit an existing secret
 func (cf *CmdFlags) editSecret(secrets *Secrets, index int) {
+	if err := secrets.Validate(index); err != nil {
+		fmt.Println("Error validating secret index:", err)
+		return
+	}
+
 	// Fetch the existing secret
 	secret := (*secrets)[index]
 
@@ -156,7 +162,12 @@ func (cf *CmdFlags) editSecret(secrets *Secrets, index int) {
 			case "7":
 				secret.UpdatedAt = new(time.Time)
 				*secret.UpdatedAt = time.Now()
-				(*secrets)[index] = secret // Update the secret in the slice
+
+				// Call the Edit method in the secrets package
+				if err := secrets.Edit(index, secret); err != nil {
+					fmt.Println("Error updating secret:", err)
+					return
+				}
 				fmt.Println("Secret updated successfully!")
 				return
 			default:
