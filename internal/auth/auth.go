@@ -1,39 +1,32 @@
 package auth
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"errors"
 	"time"
+
+	"github.com/mahinops/secretcli/internal/utils"
 )
 
-type User struct {
-	PasswordHash string    `json:"password_hash"`
-	LastAuth     time.Time `json:"last_auth"`
-}
-
+// Register implements UserService
 func (u *User) Register(password string) error {
 	if password == "" {
 		return errors.New("password cannot be empty")
 	}
-	u.PasswordHash = hashPassword(password)
+	u.PasswordHash = utils.HashPassword(password)
 	u.LastAuth = time.Now()
 	return nil
 }
 
+// Authenticate implements UserService
 func (u *User) Authenticate(password string) error {
-	if hashPassword(password) != u.PasswordHash {
+	if utils.HashPassword(password) != u.PasswordHash {
 		return errors.New("invalid password")
 	}
 	u.LastAuth = time.Now()
 	return nil
 }
 
+// IsSessionActive implements UserService
 func (u *User) IsSessionActive() bool {
 	return time.Since(u.LastAuth) < 5*time.Minute
-}
-
-func hashPassword(password string) string {
-	hash := sha256.Sum256([]byte(password))
-	return hex.EncodeToString(hash[:])
 }

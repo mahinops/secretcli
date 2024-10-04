@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"io"
@@ -53,4 +54,10 @@ func Decrypt(cipherTextHex string) (string, error) {
 	stream.XORKeyStream(plainText, cipherText)
 
 	return string(plainText), nil
+}
+
+// hashPassword hashes the password
+func HashPassword(password string) string {
+	hash := sha256.Sum256([]byte(password))
+	return hex.EncodeToString(hash[:])
 }
