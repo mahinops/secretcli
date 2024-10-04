@@ -31,7 +31,7 @@ func (u *User) Authenticate(password string) error {
 }
 
 func (u *User) IsSessionActive() bool {
-	return time.Since(u.LastAuth) < 15*time.Second
+	return time.Since(u.LastAuth) < 5*time.Minute
 }
 
 func hashPassword(password string) string {

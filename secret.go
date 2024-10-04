@@ -23,11 +23,13 @@ func (secret *Secrets) add(title, username, password, note, email, website strin
 	if title == "" {
 		return errors.New("title is required")
 	}
+
+	hashPassword := hashPassword(password)
 	// Create a new Secret instance
 	newSecret := Secret{
 		Title:     title,
 		Username:  username,
-		Password:  password,
+		Password:  hashPassword,
 		Note:      note,
 		Email:     email,
 		Website:   website,
