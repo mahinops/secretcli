@@ -98,6 +98,11 @@ To install Secret CLI, follow these steps:
     secretcli -del <id_number>
     ```
 
+## Usage Example
+![secretcli-1](static/1.png)
+![secretcli-2](static/2.png)
+
+
 ## Contribution
 - **Contributing:** Contributions are welcome! Please open an issue or submit a pull request to enhance the functionality of Secret CLI.
 
