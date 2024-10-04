@@ -24,74 +24,69 @@ func NewCommandFlags() *CmdFlags {
 	return &cf
 }
 
-// Execute processes the command flags and prompts for secret details
 func (cf *CmdFlags) Execute(secrets *Secrets) {
 	switch {
 	case cf.Add:
-		var title, username, password, note, email, website string
-		fmt.Println("Adding a new secret with title:", cf.Add)
-
-		// Create a new scanner
-		scanner := bufio.NewScanner(os.Stdin)
-
-		// Input Title
-		fmt.Print("Enter Title: ")
-		if scanner.Scan() {
-			title = scanner.Text()
-		}
-
-		// Input Username
-		fmt.Print("Enter Username: ")
-		if scanner.Scan() {
-			username = scanner.Text()
-		}
-
-		// Input Password
-		fmt.Print("Enter Password: ")
-		if scanner.Scan() {
-			password = scanner.Text()
-		}
-
-		// Input Note (optional)
-		fmt.Print("Enter Note (optional): ")
-		if scanner.Scan() {
-			note = scanner.Text()
-		}
-
-		// Input Email (optional)
-		fmt.Print("Enter Email (optional): ")
-		if scanner.Scan() {
-			email = scanner.Text()
-		}
-
-		// Input Website (optional)
-		fmt.Print("Enter Website (optional): ")
-		if scanner.Scan() {
-			website = scanner.Text()
-		}
-
-		// Check for errors
-		if err := scanner.Err(); err != nil {
-			fmt.Println("Error reading input:", err)
-			return
-		}
-
-		// Call the add method to add the new secret
-		err := secrets.add(title, username, password, note, email, website)
-		if err != nil {
-			fmt.Println("Error adding secret:", err)
-			return
-		}
-		fmt.Println("Secret added successfully!")
-
+		cf.addSecret(secrets)
 	case cf.List:
-		// Call the list method to list all secrets
 		secrets.list()
-
 	case cf.Delete != -1:
 		secrets.delete(cf.Delete)
-
+	// case cf.Edit != -1:
+	// 	cf.editSecret(secrets, cf.Edit)
 	default:
 		fmt.Println("Invalid Command. Use --help to see available commands.")
 	}
+}
+
+// Add a new secret
+func (cf *CmdFlags) addSecret(secrets *Secrets) {
+	var title, username, password, note, email, website string
+	fmt.Println("Adding a new secret...")
+
+	scanner := bufio.NewScanner(os.Stdin)
+
+	// Input Title
+	fmt.Print("Enter Title: ")
+	scanner.Scan()
+	title = scanner.Text()
+
+	// Input Username
+	fmt.Print("Enter Username: ")
+	scanner.Scan()
+	username = scanner.Text()
+
+	// Input Password
+	fmt.Print("Enter Password: ")
+	scanner.Scan()
+	password = scanner.Text()
+
+	// Input Note (optional)
+	fmt.Print("Enter Note (optional): ")
+	scanner.Scan()
+	note = scanner.Text()
+
+	// Input Email (optional)
+	fmt.Print("Enter Email (optional): ")
+	scanner.Scan()
+	email = scanner.Text()
+
+	// Input Website (optional)
+	fmt.Print("Enter Website (optional): ")
+	scanner.Scan()
+	website = scanner.Text()
+
+	// Check for errors
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error reading input:", err)
+		return
+	}
+
+	// Call the add method to add the new secret
+	err := secrets.add(title, username, password, note, email, website)
+	if err != nil {
+		fmt.Println("Error adding secret:", err)
+		return
+	}
+	fmt.Println("Secret added successfully!")
 }
