@@ -8,9 +8,14 @@ import (
 	"github.com/mahinops/secretcli/internal/storage"
 )
 
+const (
+	secretCLIPath = "~/secretcli/secrets.json"
+	userPath      = "~/secretcli/user.json"
+)
+
 func main() {
 	user := auth.User{}
-	userStorage := storage.NewStorage[auth.User](".secrets/user.json")
+	userStorage := storage.NewStorage[auth.User](userPath)
 	err := userStorage.Load(&user)
 	if err != nil {
 		fmt.Println(err)
@@ -29,7 +34,7 @@ func main() {
 	}
 
 	secrets := secret.Secrets{}
-	secretStorage := storage.NewStorage[secret.Secrets](".secrets/secrets.json")
+	secretStorage := storage.NewStorage[secret.Secrets](secretCLIPath)
 	secretStorage.Load(&secrets)
 	cmdFlags := secret.NewCommandFlags()
 	cmdFlags.Execute(&secrets)
