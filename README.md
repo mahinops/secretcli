@@ -71,7 +71,7 @@ To install Secret CLI, follow these steps:
     ```
 6. Move the Binary => 
     ```
-    sudo mv secretcli /usr/local/bin/secretcli
+    sudo mv secretcli /usr/local/bin/
     ```
 7. Verify the Installation and Set Master Password
     ```bash
