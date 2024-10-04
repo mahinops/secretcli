@@ -14,22 +14,66 @@
 
 To install Secret CLI, follow these steps:
 
-1. Download the Binary
-    ```bash
-    curl -L -o secretcli https://github.com/mahinops/secretcli/releases/download/v1.0.0/secretcli
-    ```  
+1. Download the Binary from [here](https://github.com/mahinops/secretcli/releases/tag/v1.0.0) based on your machine architecture.
 
-2. Make the Binary Executable
+    If you are not sure. Try these commands_
+    **Ubuntu:**
     ```bash
-    chmod +x secretcli
+    uname -m
+    ```
+    - `x86_64` indicates an AMD/Intel architecture.
+    - `armv7l` or aarch64 indicates an ARM architecture.
+
+
+    **Mac:**
+    ```bash
+    uname -a
     ```
 
-3. Move the Binary to a Directory in PATH
+    **Windows:**
     ```bash
-    sudo mv secretcli /usr/local/bin/
+    echo %PROCESSOR_ARCHITECTURE%
+    ```
+
+
+2. Move the Binary to a Directory in PATH
+    ```bash
+    sudo mv <file_name> /usr/local/bin/secretcli
+    ```
+3. Make the Binary Executable
+    ```bash
+    chmod +x /usr/local/bin/secretcli
     ```
 
 4. Verify the Installation and Set Master Password
+    ```bash
+    secretcli
+    ```
+
+`Note:` If you face any issue like permission error or not truster follow the alternative way_
+
+1. Clone This [Repo](https://github.com/mahinops/secretcli) in Your PC.
+2. Install Golang:
+    ```bash
+    version >= 1.23
+    ```
+3. `cd` to the repo => 
+    ```bash
+    cd secretcli
+    ```
+4. Build the Project => 
+    ```bash
+    go build -o secretcli cmd/secretcli.go
+    ```
+5. Make the Generated Binary Executable => 
+    ```
+    chmod +x secretcli
+    ```
+6. Move the Binary => 
+    ```
+    sudo mv secretcli /usr/local/bin/secretcli
+    ```
+7. Verify the Installation and Set Master Password
     ```bash
     secretcli
     ```
