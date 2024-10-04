@@ -10,19 +10,6 @@ import (
 	"github.com/mahinops/secretcli/internal/utils"
 )
 
-type Secret struct {
-	Title     string
-	Username  string
-	Password  string
-	Note      string
-	Email     string
-	Website   string
-	CreatedAt time.Time
-	UpdatedAt *time.Time
-}
-
-type Secrets []Secret
-
 // Function to add a new secret
 func (secrets *Secrets) Add(title, username, password, note, email, website string) error {
 	if title == "" {

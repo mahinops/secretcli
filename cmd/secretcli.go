@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/mahinops/secretcli/internal/auth"
-	"github.com/mahinops/secretcli/internal/command"
 	"github.com/mahinops/secretcli/internal/secret"
 	"github.com/mahinops/secretcli/internal/storage"
 )
@@ -32,7 +31,7 @@ func main() {
 	secrets := secret.Secrets{}
 	secretStorage := storage.NewStorage[secret.Secrets](".secrets/secrets.json")
 	secretStorage.Load(&secrets)
-	cmdFlags := command.NewCommandFlags()
+	cmdFlags := secret.NewCommandFlags()
 	cmdFlags.Execute(&secrets)
 	secretStorage.Save(secrets)
 }

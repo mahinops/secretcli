@@ -1,4 +1,4 @@
-package command
+package secret
 
 import (
 	"bufio"
@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/mahinops/secretcli/internal/secret"
 	"github.com/mahinops/secretcli/internal/utils"
 )
 
@@ -28,7 +27,7 @@ func NewCommandFlags() *CmdFlags {
 	return &cf
 }
 
-func (cf *CmdFlags) Execute(secrets *secret.Secrets) {
+func (cf *CmdFlags) Execute(secrets *Secrets) {
 	switch {
 	case cf.Add:
 		cf.addSecret(secrets)
@@ -42,14 +41,14 @@ func (cf *CmdFlags) Execute(secrets *secret.Secrets) {
 		fmt.Println("Invalid Command. Use --help to see available commands.")
 	}
 }
-func (cf *CmdFlags) listSecrets(secrets *secret.Secrets) {
+func (cf *CmdFlags) listSecrets(secrets *Secrets) {
 	if err := secrets.ListSecrets(); err != nil {
 		fmt.Println("Error listing secrets:", err)
 		return
 	}
 }
 
-func (cf *CmdFlags) deleteSecret(secrets *secret.Secrets) {
+func (cf *CmdFlags) deleteSecret(secrets *Secrets) {
 	if err := secrets.Delete(cf.Delete); err != nil {
 		fmt.Println("Error deleting secret:", err)
 		return
@@ -58,7 +57,7 @@ func (cf *CmdFlags) deleteSecret(secrets *secret.Secrets) {
 }
 
 // Add a new secret
-func (cf *CmdFlags) addSecret(secrets *secret.Secrets) {
+func (cf *CmdFlags) addSecret(secrets *Secrets) {
 	var title, username, password, note, email, website string
 	fmt.Println("Adding a new secret...")
 
@@ -109,7 +108,7 @@ func (cf *CmdFlags) addSecret(secrets *secret.Secrets) {
 }
 
 // Edit an existing secret
-func (cf *CmdFlags) editSecret(secrets *secret.Secrets, index int) {
+func (cf *CmdFlags) editSecret(secrets *Secrets, index int) {
 	// Fetch the existing secret
 	secret := (*secrets)[index]
 
