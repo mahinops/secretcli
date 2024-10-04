@@ -19,16 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.23'
-
-      - name: Build binary
-        run: |
-          set -ex
-          go build -o secretcli cmd/secretcli.go
-
       - name: Create Release
         id: create_release
         uses: mahinops/github-manual-release@v2.0.2
@@ -43,6 +33,17 @@ jobs:
         run: |
           upload_url=$(gh release view ${{ github.event.inputs.tag }} --json uploadUrl -q ".uploadUrl")
           echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Build binary
+        run: |
+          set -ex
+          go build -o secretcli cmd/secretcli.go
+
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
