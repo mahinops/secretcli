@@ -29,27 +29,26 @@ jobs:
           set -ex
           go build -o secretcli cmd/secretcli.go
 
-      # - name: Create Release
-      #   id: create_release
-      #   uses: mahinops/github-manual-release@v2.0.2
-      #   with:
-      #     release-tag-number: ${{ github.event.inputs.tag }}
-      #     user-email: ${{ secrets.USER_EMAIL }}
-      #     user-name: ${{ vars.USER_NAME }}
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        id: create_release
+        uses: mahinops/github-manual-release@v2.0.2
+        with:
+          release-tag-number: ${{ github.event.inputs.tag }}
+          user-email: ${{ secrets.USER_EMAIL }}
+          user-name: ${{ vars.USER_NAME }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Get Upload URL
-      #   id: get_upload_url
-      #   run: |
-      #     upload_url=$(gh release view ${{ github.event.inputs.tag }} --json uploadUrl -q ".uploadUrl")
-      #     echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Upload URL
+        id: get_upload_url
+        run: |
+          upload_url=$(gh release view ${{ github.event.inputs.tag }} --json uploadUrl -q ".uploadUrl")
+          echo "UPLOAD_URL=${upload_url}" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check File
         run: |
           ls -lha
-          tree
 
       - name: Upload binary
         uses: actions/upload-release-asset@v1
