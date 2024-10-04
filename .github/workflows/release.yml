@@ -1,0 +1,51 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for the release (e.g., v1.0.0)'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.20'  # Set your Go version here
+
+      - name: Build binary
+        run: |
+          go build -o secretcli cmd/secretcli.go
+
+      - name: Create Release
+        id: create_release
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const tag = '${{ github.event.inputs.tag }}';  // Get the input tag
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag,
+              name: `Release ${tag}`,
+              body: `Release of version ${tag}`,
+              draft: false,
+              prerelease: false
+            });
+            return release.data;
+
+      - name: Upload binary
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: secretcli
+          asset_name: secretcli
+          asset_content_type: application/octet-stream
