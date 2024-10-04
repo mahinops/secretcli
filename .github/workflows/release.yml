@@ -34,7 +34,7 @@ jobs:
         with:
           release-tag-number: ${{ github.event.inputs.tag }}
           user-email: ${{ secrets.USER_EMAIL }}
-          user-name: ${{ env.USER_NAME }}
+          user-name: ${{ vars.USER_NAME }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload binary
