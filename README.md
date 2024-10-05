@@ -1,5 +1,19 @@
 # Secret CLI
 
+![GitHub stars](https://img.shields.io/github/stars/mahinops/secretcli?style=social)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/mahinops/secretcli?color=blue)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mahinops/secretcli)](https://goreportcard.com/report/github.com/mahinops/secretcli)
+![GitHub](https://img.shields.io/github/license/mahinops/secretcli?color=brightgreen)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mahinops/secretcli/release.yml?branch=main&color=success)
+![Go Version](https://img.shields.io/github/go-mod/go-version/mahinops/secretcli?color=blue)
+![GitHub contributors](https://img.shields.io/github/contributors/mahinops/secretcli)
+![GitHub issues](https://img.shields.io/github/issues/mahinops/secretcli)
+![GitHub forks](https://img.shields.io/github/forks/mahinops/secretcli?style=social)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/mahinops/secretcli)
+![GitHub last commit](https://img.shields.io/github/last-commit/mahinops/secretcli)
+![GitHub repo size](https://img.shields.io/github/repo-size/mahinops/secretcli)
+
+
 **Secret CLI** is a command-line tool designed for securely managing secrets and sensitive information. It provides a simple and efficient interface for creating, storing, and retrieving secrets in a secure manner.
 
 ## Features
