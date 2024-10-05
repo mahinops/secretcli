@@ -19,15 +19,17 @@ type CmdFlags struct {
 
 func NewCommandFlags() *CmdFlags {
 	cf := CmdFlags{}
-	flag.BoolVar(&cf.Add, "add", false, "Add a new secret")
-	flag.BoolVar(&cf.List, "list", false, "List all secrets")
-	flag.IntVar(&cf.Delete, "del", -1, "Delete a secret by index")
-	flag.IntVar(&cf.Edit, "edit", -1, "Edit a secret by index")
-	flag.Parse()
 	return &cf
 }
 
-func (cf *CmdFlags) Execute(secrets *Secrets) {
+func (cf *CmdFlags) RegisterFlags(fs *flag.FlagSet) {
+	fs.BoolVar(&cf.Add, "add", false, "Add a new secret")
+	fs.BoolVar(&cf.List, "list", false, "List all secrets")
+	fs.IntVar(&cf.Delete, "del", -1, "Delete a secret by index")
+	fs.IntVar(&cf.Edit, "edit", -1, "Edit a secret by index")
+}
+
+func (cf *CmdFlags) Execute(secrets *Secrets, fs *flag.FlagSet) {
 	switch {
 	case cf.List:
 		cf.listSecrets(secrets)
