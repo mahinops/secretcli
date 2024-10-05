@@ -15,6 +15,7 @@ type CmdFlags struct {
 	List   bool
 	Delete int
 	Edit   int
+	Export bool
 }
 
 func NewCommandFlags() *CmdFlags {
@@ -27,6 +28,7 @@ func (cf *CmdFlags) RegisterFlags(fs *flag.FlagSet) {
 	fs.BoolVar(&cf.List, "list", false, "List all secrets")
 	fs.IntVar(&cf.Delete, "del", -1, "Delete a secret by index")
 	fs.IntVar(&cf.Edit, "edit", -1, "Edit a secret by index")
+	fs.BoolVar(&cf.Export, "export", false, "Export secret in JSON")
 }
 
 func (cf *CmdFlags) Execute(secrets *Secrets, fs *flag.FlagSet) {
@@ -39,10 +41,21 @@ func (cf *CmdFlags) Execute(secrets *Secrets, fs *flag.FlagSet) {
 		cf.addSecret(secrets)
 	case cf.Edit != -1:
 		cf.editSecret(secrets, cf.Edit)
+	case cf.Export:
+		cf.exportSecret(secrets)
 	default:
 		fmt.Println("Invalid Command. Use --help to see available commands.")
 	}
 }
+
+func (cf *CmdFlags) exportSecret(secrets *Secrets) {
+	if err := secrets.Export(); err != nil {
+		fmt.Println("Error exporting secret:", err)
+		return
+	}
+	fmt.Println("Secret exported successfully!")
+}
+
 func (cf *CmdFlags) listSecrets(secrets *Secrets) {
 	if err := secrets.ListSecrets(); err != nil {
 		fmt.Println("Error listing secrets:", err)
