@@ -14,7 +14,7 @@
 
 To install Secret CLI, follow these steps:
 
-1. Download the Binary from [here](https://github.com/mahinops/secretcli/releases/tag/v1.0.0) based on your machine architecture.
+1. Download the Binary from [here](https://github.com/mahinops/secretcli/releases) based on your machine architecture.
 
     If you are not sure. Try these commands_
     **Ubuntu:**
