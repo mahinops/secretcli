@@ -123,6 +123,14 @@ By default the user session expiry limit is set to `5 minutes`. But if any user 
     secretcli auth -set-expiry o
     ```
 
+## Export Secrets List as JSON file
+If you want to take a backup of the saved secret list, you can export them in a json file. To do so, use the following command_
+
+```bash
+secretcli secret -export
+```
+This is applicable for exporting the secrets only. User data cannot be exported. 
+
 
 ## Contribution
 - **Contributing:** Contributions are welcome! Please open an issue or submit a pull request to enhance the functionality of Secret CLI.

@@ -1,7 +1,9 @@
 package secret
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -89,5 +91,24 @@ func (secrets *Secrets) Edit(index int, updatedSecret Secret) error {
 
 	// Update the secret
 	(*secrets)[index] = updatedSecret
+	return nil
+}
+
+func (secrets *Secrets) Export() error {
+	// Directly marshal the *secrets structure into JSON
+	jsonData, err := json.MarshalIndent(secrets, "", "  ")
+	if err != nil {
+		return fmt.Errorf("error marshaling secrets to JSON: %v", err)
+	}
+
+	// Write JSON data to a file in the current directory
+	fileName := "secretList.json"
+	err = os.WriteFile(fileName, jsonData, 0644)
+	if err != nil {
+		return fmt.Errorf("error writing secrets to file: %v", err)
+	}
+
+	fmt.Printf("Secrets exported to %s\n", fileName)
+
 	return nil
 }
