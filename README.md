@@ -129,4 +129,3 @@ By default the user session expiry limit is set to `5 minutes`. But if any user 
 
 ## License
 - **License:** This project is licensed under the MIT License. See the [LICENSE](https://github.com/mahinops/secretcli/blob/main/LICENSE) file for more details.
-
