@@ -81,26 +81,47 @@ To install Secret CLI, follow these steps:
 ## Usage
 1. List All Secrets
     ```bash
-    secretcli -list
+    secretcli secret -list
     ```
 
 2. Add a Secret
     ```bash
-    secretcli -add //Follow the prompt and insert values
+    secretcli secret -add //Follow the prompt and insert values
     ```
 
 3. Edit a Secret
     ```bash
-    secretcli -edit <id_number>
+    secretcli secret -edit <id_number>
     ```
 4. Delete a Secret
     ```bash
-    secretcli -del <id_number>
+    secretcli secret -del <id_number>
     ```
 
-## Usage Example
-![secretcli-1](static/1.png)
-![secretcli-2](static/2.png)
+## User Session Expiry
+By default the user session expiry limit is set to `5 minutes`. But if any user want to update the expiry they can use the following commands_
+- Update Session Expiry Command
+
+    ```bash
+    secretcli auth -set-expiry <expiry_time>
+    ```
+
+    Here, the available options for expiry are:
+    - `s` -> seconds
+    - `m` -> minutes
+    - `h` -> hours
+    - `o` -> no-expiry (never need to authenticate again)
+
+- To set a `10 minutes expiry` user can use the following command:
+
+    ```bash
+    secretcli auth -set-expiry 10m
+    ```
+- To set `no expirty` user can use the following command:
+
+    ```bash
+    secretcli auth -set-expiry o
+    ```
 
 
 ## Contribution
