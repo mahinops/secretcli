@@ -150,7 +150,12 @@ This is applicable for exporting the secrets only. User data cannot be exported.
 
 
 ## Contribution
-- **Contributing:** Contributions are welcome! Please open an issue or submit a pull request to enhance the functionality of Secret CLI.
+Contributions are welcome! Please open an issue or submit a pull request to enhance the functionality of Secret CLI.
+Here are the reference links_
+
+- [Contributing Guidelines](CONTRIBUTING.md) - Learn how to contribute to the project.
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Be sure to follow our code of conduct when participating in the project.
+
 
 ## License
 - **License:** This project is licensed under the MIT License. See the [LICENSE](https://github.com/mahinops/secretcli/blob/main/LICENSE) file for more details.
