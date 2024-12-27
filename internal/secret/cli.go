@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/eiannone/keyboard"
 	"github.com/mahinops/secretcli/internal/utils"
 )
 
@@ -89,9 +90,13 @@ func (cf *CmdFlags) addSecret(secrets *Secrets) {
 	username = scanner.Text()
 
 	// Input Password
-	fmt.Print("Enter Password: ")
+	password, err := getPassword(secrets)
+
+	if err != nil {
+		return
+	}
+
 	scanner.Scan()
-	password = scanner.Text()
 
 	// Input Note (optional)
 	fmt.Print("Enter Note (optional): ")
@@ -122,7 +127,54 @@ func (cf *CmdFlags) addSecret(secrets *Secrets) {
 	fmt.Println("Secret added successfully!")
 }
 
-// Edit an existing secret
+func getPassword(secrets *Secrets) (string, error) {
+	fmt.Print("Enter Password (press Tab for a suggested password): ")
+	password := ""
+
+	if err := keyboard.Open(); err != nil {
+		return "", fmt.Errorf("error opening keyboard: %w", err)
+	}
+	defer keyboard.Close()
+
+	for {
+		char, key, err := keyboard.GetKey()
+
+		if err != nil {
+			return "", fmt.Errorf("error reading input: %w", err)
+		}
+
+		if key == keyboard.KeyEnter {
+			break
+		}
+
+		if key == keyboard.KeyBackspace {
+			if len(password) > 0 {
+				password = password[:len(password)-1]
+				printPassword(password)
+			}
+			continue
+		}
+
+		if key == keyboard.KeyTab {
+			password = secrets.Suggest()
+			printPassword(password)
+			continue
+		}
+
+		if char != 0 {
+			password += string(char)
+			fmt.Print(string(char))
+		}
+	}
+
+	return password, nil
+}
+
+func printPassword(password string) {
+	fmt.Printf("\rEnter Password (press Tab for a suggested password): %s", password)
+	fmt.Print("\033[K")
+}
+
 // Edit an existing secret
 func (cf *CmdFlags) editSecret(secrets *Secrets, index int) {
 	if err := secrets.Validate(index); err != nil {

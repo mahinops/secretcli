@@ -4,12 +4,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/aquasecurity/table"
 	"github.com/mahinops/secretcli/internal/utils"
+)
+
+const (
+	// Define the characters to use in the password
+	letterBytes    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/"
+	passwordLength = 18
 )
 
 // Function to add a new secret
@@ -111,4 +118,15 @@ func (secrets *Secrets) Export() error {
 	fmt.Printf("Secrets exported to %s\n", fileName)
 
 	return nil
+}
+
+func (secrets *Secrets) Suggest() string {
+	rand.NewSource(time.Now().UnixNano())
+	password := make([]byte, passwordLength)
+
+	for i := range password {
+		password[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+
+	return string(password)
 }
